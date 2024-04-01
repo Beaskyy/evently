@@ -27,7 +27,7 @@ const MobileNav = () => {
           <Image
             src="/assets/images/logo.svg"
             alt="logo"
-            width={138}
+            width={128}
             height={38}
           />
           <Separator className="border border-gray-50" />
