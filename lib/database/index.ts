@@ -1,16 +1,22 @@
-import mongoose from "mongoose";
+import mongoose, { mongo } from "mongoose";
 
-const MONGOBD_URI = process.env.MONGOBD_URI
+const MONGOBD_URI = process.env.MONGOBD_URI;
 
-let cached = (global as any).mongoose || {conn: null, promise: null}
+const cached = (global as any).mongoose || { conn: null, promise: null };
 
-export const connectToDatabase =  async () => {
-  if (!cached.conn) {
-    cached.conn = await mongoose.connect(MONGOBD_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
+export const connectToDatabase = async () => {
+  if (cached.conn) return cached.conn;
+
+  if (!MONGOBD_URI) throw new Error("MONGOBD_URI is missing");
+
+  cached.promise =
+    cached.promise ||
+    mongoose.connect(MONGOBD_URI, {
+      dbName: "evently",
+      bufferCommands: false,
     });
-    cached.promise = cached.conn.promise()
-  }
-  return cached.promise
-}
+
+  cached.conn = await cached.promise;
+
+  return cached.conn;
+};
