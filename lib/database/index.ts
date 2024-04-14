@@ -1,6 +1,6 @@
 import mongoose, { mongo } from "mongoose";
 
-const MONGOBD_URI = process.env.MONGOBD_URI;
+const MONGOBD_URI = process.env.MONGODB_URI;
 
 const cached = (global as any).mongoose || { conn: null, promise: null };
 
